@@ -29,7 +29,6 @@ func makeLine(of symbol: String, count: Int) -> String {
 
 // printing the heading with empty lines for formatting
 func title(_ text: String) {
-    let border = makeLine(of: "─", count: 46)
     print("")
     print("")
     print(text)
