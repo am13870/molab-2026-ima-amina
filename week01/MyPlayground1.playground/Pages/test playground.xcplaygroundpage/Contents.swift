@@ -1,81 +1,105 @@
-import Foundation
+// example of a poem (written by me), stored as a list of separate lines
+let poem = [
+    "this is line one",
+    "this is line two",
+    "another line",
+    "am i a poet?",
+    "i am an artist indeed!"
+]
 
-let poem = """
-this is line one
-this is line two
-another line
-am i a poet?
-i am an artist indeed!
-"""
+// step size for the staircase effect
+var stepWidth = 4
+// width of the shape in the middle
+var rhombusSize = 9
 
-let poemLines = poem.split(separator: "\n").map { String($0) }
-let longestLine = poemLines.map { $0.count }.max() ?? 0
-
-class Canvas {
-    let rows: Int
-    let columns: Int
-    var grid: [[Character]]
-
-    init(rows: Int, columns: Int) {
-        self.rows = rows
-        self.columns = columns
-        self.grid = Array(repeating: Array(repeating: " ", count: columns), count: rows)
+// building a string by repeating one symbol
+func makeLine(of symbol: String, count: Int) -> String {
+    // starting with empty
+    var result = ""
+    // if there is no poem return an empty string
+    if count <= 0 {
+        return result
     }
-
-    func stamp(_ text: String, row: Int, column: Int) {
-        var currentColumn = column
-        for character in text {
-            if character != " ",
-               row >= 0, row < rows,
-               currentColumn >= 0, currentColumn < columns {
-                grid[row][currentColumn] = character
-            }
-            currentColumn += 1
-        }
+    // a new symbol is added with each iteration
+    for _ in 1...count {
+        result += symbol
     }
-
-    
-    func show() {
-        for row in grid {
-            print(String(row))
-        }
-    }
+    return result
 }
 
-// staircase effect, each line is pushed to the right by the same step
-func staircase(_ lines: [String], step: Int) -> Canvas {
-    let canvas = Canvas(rows: lines.count, columns: longestLine + step * lines.count + 2)
-    for (index, line) in lines.enumerated() {
-        canvas.stamp(line, row: index, column: index * step)
-    }
-    return canvas
-}
-
-
-// mandala effect, one line stamped around in a circle
-func mandala(_ line: String, copies: Int, radius: Double) -> Canvas {
-    let size = Int(radius * 2) + line.count + 4
-    let canvas = Canvas(rows: Int(radius * 2) + 4, columns: size)
-    let centerRow = Double(canvas.rows) / 2
-    let centerColumn = Double(canvas.columns) / 2
-    for copy in 0..<copies {
-        let angle = Double(copy) / Double(copies) * 2 * Double.pi
-        let row = centerRow + sin(angle) * radius / 2.2
-        let column = centerColumn + cos(angle) * radius - Double(line.count) / 2
-        canvas.stamp(line, row: Int(row), column: Int(column))
-    }
-    return canvas
-}
-
+// printing the heading with empty lines for formatting
 func title(_ text: String) {
-    print("\n" + String(repeating: "─", count: 46))
+    let border = makeLine(of: "─", count: 46)
+    print("")
+    print("")
     print(text)
-    print(String(repeating: "─", count: 46))
+    print("")
 }
 
-title("1. the poem")
-poemLines.forEach { print($0) }
+// the whole poem is combined as a list of letters with spaces dropped
+func lettersCombined(of lines: [String]) -> [Character] {
+    var letters: [Character] = []
+ 
+    // go through each line and each letter in this line
+    for line in lines {
+        for character in line {
+            // if the character is not a space add it
+            if character != " " {
+                letters.append(character)
+            }
+        }
+    }
+    return letters
+}
 
+// staircase effect - each line is printed with an indentation
+func staircase(lines: [String], step: Int) {
+    // counting the current line
+    var rowNumber = 0
+ 
+    for line in lines {
+        let indent = makeLine(of: " ", count: rowNumber * step)
+        print(indent + line)
+        // each line is pushed one step further
+        rowNumber += 1
+    }
+}
+
+// rhombus effect, the poem fills the shape
+func rhombus(lines: [String], size: Int) {
+    let letters = lettersCombined(of: lines)
+    // checking which letter to use next
+    var position = 0
+ 
+    // rhombus shape is two triangles stacked together, the widest line is in the middle - going top to bottom line
+    for row in 0..<(size * 2 - 1) {
+        //checking the distance from the middle row (size-1) as an absolute value
+        let distance = abs(row - (size - 1))
+ 
+        // in the middle the row is the widest, distance is 0 so is the indentation
+        let indent = distance
+        let width = (size - distance) * 2 - 1
+ 
+        // pusing the row to the right
+        var text = makeLine(of: " ", count: indent)
+ 
+        // filling the row with letters
+        for _ in 0..<width {
+            // if the poem is too short we wrap back to the first letter
+            text.append(letters[position % letters.count])
+            position += 1
+        }
+        print(text)
+    }
+}
+
+// printing the original poem
+title("1. the poem")
+for line in poem {
+    print(line)
+}
+
+// printing the staircase version
 title("""
          2. the
                p
@@ -83,11 +107,12 @@ title("""
                  e
                   m
       """)
-staircase(poemLines, step: 4).show()
+staircase(lines: poem, step: stepWidth)
 
+// printing the rhombus version
 title("""
     3. the    p
            m     o
               e
     """)
-mandala(poemLines[0], copies: 15, radius: 20).show()
+rhombus(lines: poem, size: rhombusSize)
