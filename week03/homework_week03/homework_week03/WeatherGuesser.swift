@@ -12,6 +12,8 @@ let nsymbol = 7
 // symbol size is associated with this weather probability for the day
 let minSymbol = 50.0
 let maxSymbol = 100.0
+// separate colour palette for the weather symbols
+let weatherColors = [Color.blue, Color.cyan, Color.gray, Color.orange, Color.yellow]
 
 // symbols used
 let symbolSpecs = ["cloud.drizzle.fill", "sun.max.fill", "sun.min.fill", "cloud.fog.fill", "cloud.bolt.fill", "sun.rain.fill"]
@@ -80,7 +82,7 @@ func makeSymbols() -> [SymbolSpec] {
         let width = Double.random(in: minSymbol...maxSymbol)
         // randon choice of symbol name and color
         let name = symbolSpecs.randomElement()!
-        let color = colorSpecs.randomElement()!
+        let color = weatherColors.randomElement()!
         // storing the symbol's position, size, name, and color
         result.append(SymbolSpec(x: x, y: y, width: width, name: name, color: color))
     }
