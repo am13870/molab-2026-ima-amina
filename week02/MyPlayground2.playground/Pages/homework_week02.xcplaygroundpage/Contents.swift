@@ -1,6 +1,6 @@
 import Foundation
 
-// the character's lines, empty means that it stays silent
+// the character's lines, empty lines added to show when they stay silent
 let conversation = [
     "hello, this is my first line.",
     "",
