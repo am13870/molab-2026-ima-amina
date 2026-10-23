@@ -30,7 +30,7 @@ struct CameraPicker: UIViewControllerRepresentable {
             // closing the library screen
             picker.dismiss(animated: true)
         }
-        // building the library screen the first time
+        // when the library is closed without choosing anythign
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             picker.dismiss(animated: true)
         }
