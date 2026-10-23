@@ -12,7 +12,7 @@ struct NoteLibrary: View {
     // shared recorder
     @Environment(AudioRecorder.self) var recorder
     
-    // name is types before recording starts
+    // name is typed before recording starts
     @State var personName = ""
     
     var body: some View {
