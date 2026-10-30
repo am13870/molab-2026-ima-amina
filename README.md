@@ -5,4 +5,4 @@ Midterm checklist
   - ✅ able to build and run example apps own iPhone
   - ✅ installed Xcode 27
   - ✅ watched at least one WWDC video
-- [ ] Upload profile photo to HOS-Lobby app
+  - ✅ uploaded profile photo to HOS-Lobby app
