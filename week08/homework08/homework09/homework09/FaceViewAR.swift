@@ -64,9 +64,9 @@ struct FaceViewAR: UIViewRepresentable {
             material?.diffuse.contents = UIColor.cyan
             material?.lightingModel = .constant
             let faceNode = SCNNode(geometry: faceGeometry)
+            
             // flat rectangle for the photo (measurements adjusted to fit the 3:4 dimensions)
             let plane = SCNPlane(width: 0.07, height: 0.0525)
-
             let photoNode = SCNNode(geometry: plane)
             // updateUIView can find it again
             photoNode.name = "photo"
